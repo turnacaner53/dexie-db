@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { db } from '../utils/db';
 import { useLiveQuery } from 'dexie-react-hooks';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const { todos } = db;
 
@@ -11,6 +13,7 @@ function Todo() {
 
   const handleAddTodo = async (e) => {
     e.preventDefault();
+    if (inputValue === '') return;
     const newTodo = { task: inputValue, completed: false, date: new Date() };
 
     await todos.add(newTodo);
@@ -25,9 +28,21 @@ function Todo() {
     await todos.update(id, { completed: !!e.target.checked });
   };
 
+  const resetDatabase = async () => {
+    await todos.clear();
+  };
+
   return (
     <div className='container mx-auto'>
-      <h1 className='text-2xl font-bold my-6 text-sky-800'>Todo App</h1>
+      <div className='flex justify-between items-center'>
+        <h1 className='text-2xl font-bold my-6 text-sky-800'>Todo App</h1>
+        <button
+          onClick={() => resetDatabase()}
+          className='h-12 bg-slate-300 w-12 text-center rounded-full border-red-700  hover:bg-slate-700 text-white font-bold py-2 px-4'
+        >
+          <FontAwesomeIcon icon={faTrash} className='text-red-700' />
+        </button>
+      </div>
       <form className='flex mb-4' onSubmit={handleAddTodo}>
         <input
           type='text'
@@ -37,8 +52,9 @@ function Todo() {
         />
         <button
           onClick={handleAddTodo}
-          className='bg-blue-500 w-32 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+          className='bg-blue-500 w-48 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
         >
+          <FontAwesomeIcon icon={faPlus} className='text-white mr-4' />
           Add Todo
         </button>
       </form>
@@ -70,7 +86,7 @@ function Todo() {
               onClick={() => handleDeleteTodo(id)}
               className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
             >
-              Delete
+              <FontAwesomeIcon icon={faTrash} className='text-white' />
             </button>
           </li>
         ))}
