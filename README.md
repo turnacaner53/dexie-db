@@ -6,9 +6,7 @@ This is a simple Todo application built using Dexie, a minimalistic IndexedDB wr
 
 - Add new tasks
 - Mark tasks as completed
-- Edit task details
 - Delete tasks
-- Filter tasks by status (completed/incomplete)
 
 ## Installation
 
